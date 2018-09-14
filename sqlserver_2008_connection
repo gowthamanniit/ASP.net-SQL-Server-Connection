@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Data.Sql;
+using System.Data.SqlClient;
+namespace sqlCOn
+{
+    class Program
+    {        
+        static void Main(string[] args)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            //con = new SqlConnection("Database=Angu;Server=ADMIN/SQLExpress;User ID=sa;Password=12345;Integrated Security=True;");
+            //con = new SqlConnection("Data Source=./sqlexpress;Initial Catalog=Angu;User ID=sa;password=12345;");
+
+            con=new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=Angu1;Persist Security Info=True;User ID=sa;Password=12345;Pooling=False");
+            con.Open();    
+            
+            Console.Write(con.State.ToString());
+
+            cmd = new SqlCommand("insert into details values(1002,'rajasekar')", con);
+
+            int ans=cmd.ExecuteNonQuery();
+            if (ans > 0)
+                Console.WriteLine("succesffully inserted");
+            else
+                Console.WriteLine("not inserted to database");
+
+            con.Close();
+            
+        }
+    }
+}
