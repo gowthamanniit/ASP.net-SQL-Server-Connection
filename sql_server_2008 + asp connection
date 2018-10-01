@@ -1,0 +1,115 @@
+
+	sql-server:(2008) + asp.net connection
+	===============================
+
+	sql server : back end tool  ( permanenet storage)
+	asp.net : front end tool	(manipulation)
+
+	how to open sql server?
+
+		step 1: sql server conficuration manager:
+
+			start (sql express)--> red color to greent color
+		step 2: microsoft sql server management studio express
+			open --> 
+			
+			server type: database engine
+			servername: .\sqlexpress
+			authentication: sql server authentication
+			user id:	sa
+			password: 12345 (password user installed at the 
+					time of s/w).
+		step 3: connect.
+
+	database creation:
+	===============
+			
+			1) new query click:
+			2) create database jaya;
+			3) execute and refresh database.
+	table creation:
+	============
+			use jaya
+		create table student(rno int,name varchar(20),mark int)
+	insert values:	
+	===========
+		-- SINGLE comment line
+		/*                MULTI COMMENT LINE  .............  */
+		
+		insert into student values(1005,'banu',99)
+
+	SELECT QUERY:
+	==============
+		select * from student;
+
+	
+
+	open asp.net
+	===========
+
+		connection string:
+		server explorer: (if does not exit: goto view menu)
+	
+		connect to database --> icon click.
+
+		data source: microsoft sql server (sqlclient)
+		server name: .\sqlexpress
+		
+		select: use sql server authentication
+		
+		type databasename: ex: jaya or master
+		
+		testconnection (success)
+
+		ok.
+
+		right click--> properites -->conneciton string : copy
+
+	asp.net coding:
+	=============
+using System.Data;
+using System.Data.Sql;
+using System.Data.SqlClient;
+
+public partial class dbcon : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        int rno = int.Parse(TextBox1.Text);
+        String name = TextBox2.Text;
+        int mark = int.Parse(TextBox3.Text);
+
+        SqlConnection con = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=jaya;User ID=sa;Password=12345");
+        con.Open();
+
+        SqlCommand cmd = new SqlCommand("insert into student values("+rno+",'"+name+"',"+mark+")",con);
+        cmd.ExecuteNonQuery();
+
+        Response.Write("successfully inserted");
+        Button2_Click(sender,e);
+       
+        con.Close();
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        //  SqlConnection con = new SqlConnection("Data Source=.\\Sql express;Initial Catalogue=jaya;User Id=sa;password=12345");
+        SqlConnection con = new SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=jaya;User ID=sa;Password=12345");
+        con.Open();
+
+        SqlDataAdapter da = new SqlDataAdapter("select * from student",con);
+
+        DataTable dt=new DataTable();
+
+        da.Fill(dt);
+
+        GridView1.DataSource = dt;
+        GridView1.DataBind();
+
+
+    }
+}
+		
